@@ -15,7 +15,6 @@ def register():
     email = data.get('email')
     password = data.get('password')
 
-    # Add validation and hashing logic here
     v_email = Customer.validate_email(email)
     if v_email:
         return jsonify({"email error"}), 400
@@ -28,7 +27,7 @@ def register():
         password=h_password
     )
     
-    # Add logic to save the user to the database
+
     db.session.add(new_customer)
     db.session.commit()
     return jsonify({'message': 'User registered successfully!'}), 201
@@ -60,10 +59,10 @@ def change_password():
 
     old_password = data.get("password")
     new_password = data.get("new_password")
-#if password does not match
+
     if not current_user.check_password(old_password):
         return jsonify({'error': 'Old password is incorrect!'}), 401
-#if new password is same as old password    
+  
     current_user.password = Customer.hash_password(new_password)
     
     db.session.commit()
@@ -82,8 +81,7 @@ def home():
 def add_to_cart(id):
     #get the product id if not then error
     item_to_add = Product.query.get_or_404(id)
-
-    #
+    
     item_exists = Cart.query.filter_by(product_link=id, customer_link=current_user.id).first()
 
     try:
@@ -99,8 +97,8 @@ def add_to_cart(id):
         else:
             new_item = Cart(
                 quantity = 1,
-                customer_link = current_user.id,    # linking the current user id to cart
-                product_link = item_to_add.id     #add product link to cart
+                customer_link = current_user.id,    
+                product_link = item_to_add.id     
             )
             db.session.add(new_item)
 
@@ -226,7 +224,7 @@ def checkout():
             mode='payment',
             success_url='http://localhost:5000/success?session_id={CHECKOUT_SESSION_ID}',
             cancel_url='http://localhost:5000/cancel',
-            client_reference_id=current_user.id   # link the session to the logged-in user
+            client_reference_id=current_user.id  
         )   
         return jsonify ({"checkout_url":create_checkout_session.url}), 200
     except Exception as e:
@@ -269,3 +267,4 @@ def payment_success():
             "order_count": len(cart_items)
 
         }), 200
+
