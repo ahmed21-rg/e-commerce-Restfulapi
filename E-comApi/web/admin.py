@@ -35,35 +35,25 @@ def add_product():
     flash_sale = request.form.get('flash_sale').lower() in ['true', '1', 'yes']
 
     product_picture = request.files.get("product_picture")  
-# ✅ Get the uploaded file from the form or API request using the field name "product_picture".
-# If no file is uploaded, this will be None.
-    print("➡️ request.form:", request.form)
-    print("➡️ request.files:", request.files)
+
+    print(" request.form:", request.form)
+    print(" request.files:", request.files)
 
     if not product_name or not current_price or not previous_price:
         return jsonify({"message":"missing required feilds!"}), 400
 
     if product_picture:  
-    # ✅ If a file is actually uploaded, process it.
+   
 
         file_name = secure_filename(product_picture.filename)  
-    # ✅ Make the filename safe (remove special chars, spaces, etc.).
-    # Example: "my phone.png" → "my_phone.png"
-
+  
         save_path = os.path.join(current_app.root_path, 'static', 'images', file_name)  
-    # ✅ Create the absolute path on your system where the file will be saved.
-    # Example: "C:/Users/you/project/static/media/my_phone.png"
-
+   
 
         filepath = f"/static/images/{file_name}"  
-    # ✅ This is the relative path you will store in your database.
-    # Example: "/static/media/my_phone.png"
-    # Later, you can use this in HTML <img src="{{ product.product_picture }}">.
-
+   
         product_picture.save(save_path)  
-    # ✅ Save the uploaded file to the actual disk location.
-    # The file will now physically exist in your "static/media" folder.
-
+   
     if not product_picture:
         return jsonify({"message":"add a product picture!"})
 
@@ -80,7 +70,6 @@ def add_product():
     try:
         db.session.add(new_product)
         db.session.commit()
-        print("✅ Product saved to DB")
         return jsonify({"message":"product added sucessfully!"})
     except Exception as e:
         db.session.rollback()
@@ -218,4 +207,5 @@ def status_update(id):
         db.session.rollback()
         return jsonify({"error": str(e)})
     
+
 
