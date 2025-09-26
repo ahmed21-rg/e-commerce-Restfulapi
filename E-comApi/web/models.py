@@ -27,7 +27,7 @@ class Customer(UserMixin, db.Model):
         return check_password_hash(self.password, password) 
 
     def __repr__(self):
-        return f"Customer('{self.username}', '{self.email}')" # for easy identification in logs and shell
+        return f"Customer('{self.username}', '{self.email}')"
     
     
 class Product(db.Model):
@@ -40,11 +40,11 @@ class Product(db.Model):
     in_stock = db.Column(db.Integer, default=0)
     flash_sale = db.Column(db.Boolean, default=False)
     date_added = db.Column(db.DateTime, default=db.func.current_timestamp())
-    carts = db.relationship('Cart', backref='product', lazy=True)      # product can be in multiple carts
-    orders = db.relationship('Order', backref='product', lazy=True)    # product can be in multiple orders
+    carts = db.relationship('Cart', backref='product', lazy=True)      
+    orders = db.relationship('Order', backref='product', lazy=True)    
 
     def __repr__(self):
-        return f"Product('{self.product_name}', '{self.current_price}')" # for easy identification in logs and shell
+        return f"Product('{self.product_name}', '{self.current_price}')" 
     
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,4 +66,5 @@ class Order(db.Model):
     product_link = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
     def __repr__(self):
-        return f"Order('{self.id}', '{self.price}', '{self.status}')" # for easy identification in logs and shell
+
+        return f"Order('{self.id}', '{self.price}', '{self.status}')"
