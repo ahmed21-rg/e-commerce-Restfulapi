@@ -23,10 +23,10 @@ def all_customers():
 
 #add products
 @admin.route('/products', methods=['POST'])
-#@login_required
+@login_required
 def add_product():
 
-      # text fields come from request.form
+
     product_name = request.form.get('product_name')
     description = request.form.get('description')
     current_price = float(request.form.get('current_price'))
@@ -78,7 +78,7 @@ def add_product():
 
 
 @admin.route('/products', methods=['GET'])
-#@login_required
+@login_required
 def profucts():
     product = Product.query.order_by(Product.date_added.desc()).all()
     
@@ -101,7 +101,7 @@ def profucts():
 
 
 @admin.route('/product/<int:id>', methods=['PUT'])
-#@login_required
+@login_required
 def update_item(id):
     #logic for admin can update only
 
@@ -207,5 +207,6 @@ def status_update(id):
         db.session.rollback()
         return jsonify({"error": str(e)})
     
+
 
 
