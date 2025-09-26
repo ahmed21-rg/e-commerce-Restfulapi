@@ -226,7 +226,7 @@ def checkout():
             mode='payment',
             success_url='http://localhost:5000/success?session_id={CHECKOUT_SESSION_ID}',
             cancel_url='http://localhost:5000/cancel',
-            client_reference_id=current_user.id   # ✅ link the session to the logged-in user
+            client_reference_id=current_user.id   # link the session to the logged-in user
         )   
         return jsonify ({"checkout_url":create_checkout_session.url}), 200
     except Exception as e:
@@ -241,7 +241,7 @@ def payment_success():
 
     session_id = request.args.get("session_id")
     session = stripe.checkout.Session.retrieve(session_id)
-    customer_id = session.client_reference_id  # ✅ this is your Customer.id
+    customer_id = session.client_reference_id  #this is your Customer.id
     
     cart_items = Cart.query.filter_by(customer_link=customer_id).all()
 
@@ -262,9 +262,10 @@ def payment_success():
 
 
     db.session.commit()
-    # ✅ Now return a proper response
+
     return jsonify({
             "message": "Payment successful, order placed.",
             "session_id": session.id,
             "order_count": len(cart_items)
+
         }), 200
