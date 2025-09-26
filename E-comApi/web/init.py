@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_bcrypt import Bcrypt  # Only import from flask_bcrypt
+from flask_bcrypt import Bcrypt 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import stripe
@@ -7,8 +7,8 @@ import os
 from dotenv import load_dotenv
 
 
-db = SQLAlchemy()  # Create the SQLAlchemy database object
-bcrypt = Bcrypt()  # Create the Bcrypt object
+db = SQLAlchemy() 
+bcrypt = Bcrypt()  
 
 
 def create_app():
@@ -25,12 +25,12 @@ def create_app():
 
 
 
-    bcrypt.init_app(app) # Initialize Bcrypt with the Flask app
-    db.init_app(app)  # Bind SQLAlchemy to your Flask app
+    bcrypt.init_app(app)
+    db.init_app(app)  
     
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'views.login'  # Specify the login view for @login_required
+    login_manager.login_view = 'views.login'  
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -45,6 +45,7 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+
 
 
     return app
